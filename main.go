@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"os"
+
+	"github.com/01-edu/z01"
 )
 
 // Проверяем, является ли число допустимым для данной позиции
@@ -173,10 +174,19 @@ func hasMultipleSolutions(board [][]int) bool {
 	return solutions > 1
 }
 
+// Выводим ошибку
+func errorMessage() {
+	errorPrint := "Error"
+	for _, ch := range errorPrint {
+		z01.PrintRune(ch)
+	}
+	z01.PrintRune('\n')
+}
+
 func main() {
 	// Проверяем аргументы командной строки
 	if !validateInput(os.Args[1:]) {
-		fmt.Println("Error")
+		errorMessage()
 		return
 	}
 
@@ -185,32 +195,32 @@ func main() {
 
 	// Проверяем начальное состояние на конфликты
 	if hasInitialConflicts(board) {
-		fmt.Println("Error")
+		errorMessage()
 		return
 	}
 
 	// Проверяем наличие более одного решения
 	if hasMultipleSolutions(board) {
-		fmt.Println("Error: multiple solutions")
+		errorMessage()
 		return
 	}
 
 	// Решаем судоку
 	if !solveSudoku(board) {
-		fmt.Println("Error: no solution found")
+		errorMessage()
 		return
 	}
 
 	// Выводим решение
 	for i := 0; i < 9; i++ {
 		for j := 0; j < 9; j++ {
-			fmt.Printf("%d", board[i][j])
+			z01.PrintRune('0' + rune(board[i][j]))
 			if j < 8 {
-				fmt.Print(" ")
+				z01.PrintRune(' ')
 			}
 		}
-		fmt.Print("")
-		fmt.Println()
+
+		z01.PrintRune('\n')
 	}
-	fmt.Println("")
+	z01.PrintRune('\n')
 }
